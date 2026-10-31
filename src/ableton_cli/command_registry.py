@@ -300,6 +300,7 @@ COMMAND_DESCRIPTORS: tuple[CommandDescriptor, ...] = (
     _d("session stop-all-clips", "stop_all_clips", _WRITE),
     _d("session watch", None, _READ),
     _d("set automation write", None, _WRITE),
+    _d("set collect", None, _WRITE),
     _d("set diff", None, _READ),
     _d("set inspect", None, _READ),
     _d("set lint", None, _READ),

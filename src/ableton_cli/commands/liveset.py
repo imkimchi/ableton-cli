@@ -16,6 +16,7 @@ from ..liveset.document import load_live_set
 from ..liveset.inspect import inspect_live_set
 from ..liveset.lint import lint_live_set, require_no_errors
 from ..liveset.ops.automation import AutomationScope, write_automation
+from ..liveset.ops.collect import collect_live_set
 from ..liveset.save import require_new_output, save_live_set
 from ..runtime import execute_command, get_runtime
 from ._validation import invalid_argument, parse_envelope_points_json
@@ -58,6 +59,27 @@ def set_diff(
         command="set diff",
         args={"from": str(from_path), "to": str(to_path)},
         action=lambda: diff_live_sets(load_live_set(from_path), load_live_set(to_path)),
+    )
+
+
+@set_app.command("collect")
+def set_collect(
+    ctx: typer.Context,
+    path: SetPathOption,
+    out: Annotated[Path, typer.Option("--out", help="New project folder to create")],
+) -> None:
+    command = "set collect"
+
+    def _run() -> dict[str, Any]:
+        if get_runtime(ctx).read_only:
+            raise read_only_violation(command)
+        return collect_live_set(load_live_set(path), out)
+
+    execute_command(
+        ctx,
+        command=command,
+        args={"path": str(path), "out": str(out)},
+        action=_run,
     )
 
 

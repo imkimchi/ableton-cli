@@ -599,6 +599,13 @@ STABLE_ACTION_MAPPINGS: tuple[StableActionMapping, ...] = (
         capability="Write one arrangement automation lane into a new Live Set file.",
     ),
     StableActionMapping(
+        action="collect_live_set",
+        command=(
+            "uv run ableton-cli --output json set collect --path <set.als> --out <new project dir>"
+        ),
+        capability="Copy a Live Set and its samples into a new self-contained project folder.",
+    ),
+    StableActionMapping(
         action="execute_batch",
         command=(
             "uv run ableton-cli --output json batch run (--steps-file <path> | --steps-"

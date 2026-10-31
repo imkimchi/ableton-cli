@@ -140,6 +140,7 @@ uv run ableton-cli set inspect --path ./Song\ Project/Song.als
 uv run ableton-cli set lint --path ./Song\ Project/Song.als
 uv run ableton-cli set diff --from ./Song\ Project/Song.als --to ./Song\ Project/Song-v2.als
 uv run ableton-cli set automation write --path ./Song\ Project/Song.als --out ./Song\ Project/Song-auto.als --track-index 0 --target device.1.Frequency --points-json '[{"time":0,"value":500},{"time":64,"value":8000}]'
+uv run ableton-cli set collect --path ./Loose/Song.als --out ./Collected/Song\ Project
 ```
 
 Offline loudness, spectrum, band-share and reference analysis through ffmpeg is not part of
@@ -578,6 +579,25 @@ the Remote Script and file access on its own.
     (normally the project folder, so project samples still resolve). The result is
     integrity-checked before an atomic write; the source file is never modified.
     `--read-only` blocks the command; `--dry-run` plans without reading or writing.
+
+- `set collect --path <set.als> --out <new project dir>`: the offline counterpart of
+  Live's File > Collect All and Save, which the Remote Script cannot trigger (Live
+  exposes no save or collect to scripts). It creates `--out` with an
+  `Ableton Project Info` folder, a copy of the set, and every sample the set uses.
+  - Samples stored as absolute (`RelativePathType` 0) or set-relative (1) paths are
+    copied to `Samples/Imported/`; project samples (3) keep their relative path. A
+    sample shared by several clips is copied once, and different files with the same
+    name get a content-hash suffix. `.asd` analysis files are copied with their sample.
+  - Collected references become project-relative, and `OriginalFileRef` entries that
+    point at a collected file follow them. Library and Pack samples (other types) are
+    left as they are and counted in `result.retained_reference_count`.
+  - Every copy is checked against its source's SHA-256. A sample that cannot be found
+    fails the command with `INVALID_ARGUMENT` (`error.details.files`) before anything
+    is written; relink it in Live first.
+  - `--out` must not exist and its parent must. The project is built in a hidden
+    sibling folder and renamed into place only when complete; the source set and
+    samples are never modified. Plug-in presets and plug-in-internal samples are not
+    collected. `--read-only` blocks the command; `--dry-run` plans without writing.
 
 Failure modes:
 

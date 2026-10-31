@@ -64,6 +64,21 @@ LIVESET_CONTRACTS: dict[str, dict[str, dict[str, Any]]] = {
             }
         ),
     },
+    "set collect": {
+        "args": _object({"path": _STRING, "out": _STRING}),
+        "result": _object(
+            {
+                "path": _STRING,
+                "out": _STRING,
+                "set": _STRING,
+                "rewritten_reference_count": _INTEGER,
+                "retained_reference_count": _INTEGER,
+                "copied_file_count": _INTEGER,
+                "copied_byte_count": _INTEGER,
+                "samples": _object({"count": _INTEGER, "files": _array(_STRING)}),
+            }
+        ),
+    },
     "set inspect": {
         "args": _PATH_ARGS,
         "result": _object(

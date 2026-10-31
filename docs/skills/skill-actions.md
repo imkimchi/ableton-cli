@@ -100,6 +100,7 @@ Stable action names and CLI mappings for automation wrappers.
 | `lint_live_set` | `uv run ableton-cli --output json set lint --path <set.als>` | Check a Live Set file offline for ID integrity errors and missing samples. |
 | `diff_live_set` | `uv run ableton-cli --output json set diff --from <a.als> --to <b.als>` | Compute semantic added/removed/changed deltas between two Live Set files. |
 | `write_live_set_automation` | `uv run ableton-cli --output json set automation write --path <set.als> --out <new.als> --track-index <track> --target <target> --points-json '<json>'` | Write one arrangement automation lane into a new Live Set file. |
+| `collect_live_set` | `uv run ableton-cli --output json set collect --path <set.als> --out <new project dir>` | Copy a Live Set and its samples into a new self-contained project folder. |
 | `execute_batch` | `uv run ableton-cli --output json batch run (--steps-file <path> | --steps-json '<json>' | --steps-stdin) [--continue-on-error]` | Execute multiple remote commands atomically from JSON input. |
 
 ## CLI-only commands (not stable actions)

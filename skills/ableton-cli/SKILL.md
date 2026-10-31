@@ -195,6 +195,7 @@ uv run ableton-cli set inspect --path ./Song\ Project/Song.als
 uv run ableton-cli set lint --path ./Song\ Project/Song.als
 uv run ableton-cli set diff --from ./Song\ Project/Song.als --to ./Song\ Project/Song-v2.als
 uv run ableton-cli set automation write --path ./Song\ Project/Song.als --out ./Song\ Project/Song-auto.als --track-index 0 --target device.1.Frequency --points-json '[{"time":0,"value":500},{"time":64,"value":8000}]'
+uv run ableton-cli set collect --path ./Loose/Song.als --out ./Collected/Song\ Project
 uv run ableton-cli set automation write --path ./Song\ Project/Song.als --out ./Song\ Project/Song-sends.als --track-name Keys --target send.0 --points-json '[{"time":0,"value":0.1},{"time":32,"value":0.6}]'
 uv run ableton-cli set automation write --path ./Song\ Project/Song.als --out ./Song\ Project/Song-tempo.als --main --target mixer.tempo --points-json '[{"time":0,"value":120},{"time":128,"value":132}]'
 ```
@@ -209,6 +210,11 @@ effective tempo, which follows arrangement tempo automation over the manual valu
 
 `set automation write` is the way to write arrangement automation; the Remote Script can
 only write session clip envelopes.
+
+`set collect` is the way to "Collect All and Save" without the Live GUI: it writes a new
+project folder (`--out` must not exist) with the set and copies of its samples, rewritten
+to project-relative paths. Library/Pack samples stay external. A missing sample fails with
+`INVALID_ARGUMENT` before anything is written. Open the collected set in Live to confirm.
 
 Automation in a composition workflow:
 
@@ -746,6 +752,7 @@ uv run ableton-cli --output json ping
 - `lint_live_set` -> `uv run ableton-cli --output json set lint --path <set.als>`
 - `diff_live_set` -> `uv run ableton-cli --output json set diff --from <a.als> --to <b.als>`
 - `write_live_set_automation` -> `uv run ableton-cli --output json set automation write --path <set.als> --out <new.als> --track-index <track> --target <target> --points-json '<json>'`
+- `collect_live_set` -> `uv run ableton-cli --output json set collect --path <set.als> --out <new project dir>`
 - `execute_batch` -> `uv run ableton-cli --output json batch run (--steps-file <path> | --steps-json '<json>' | --steps-stdin) [--continue-on-error]`
 
 ## Examples

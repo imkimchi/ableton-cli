@@ -1,7 +1,8 @@
 # Offline Live Set editing (`set` command group): design proposal
 
-Status: phase 1 (`set inspect`, `set lint`, `set diff`) is implemented, and so is
-`set automation write` from phase 3 (with `save.py` for the shared output rules). The
+Status: phase 1 (`set inspect`, `set lint`, `set diff`) is implemented, and so are
+`set automation write` from phase 3 (with `save.py` for the shared output rules) and
+`set collect`. The
 rest of phases 2-4 are proposals. Every item here changes the public surface and lands through the normal
 TDD + contract-update workflow in `CONTRIBUTING.md`.
 
@@ -86,6 +87,7 @@ go through `runtime.execute_command`, so `--output json`, `--read-only`,
 | `set group create PATH --track-index ... --name NAME --out OUT` | write | Group existing tracks |
 | `set locators replace PATH --locators-json JSON --out OUT` | write | Replace all locators |
 | `set automation write --path PATH <selector> --target T --points-json JSON --out OUT` | write (implemented) | Write an arrangement envelope (replaces the lane) |
+| `set collect --path PATH --out DIR` | write (implemented) | Collect All and Save into a new project folder |
 | `set device import PATH <selector> --preset FILE --index N --out OUT` | write | Insert a device from an `.adv` / `.adg` |
 
 Path arguments are options (`--path`, `--from`, `--to`), matching `session diff` and
